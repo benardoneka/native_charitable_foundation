@@ -1,9 +1,22 @@
 {
-  "name": "ncf-website",
+  "name": "ncf-backend",
   "version": "1.0.0",
-  "description": "Native Charitable Foundation Website",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "serverless-http": "^3.2.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "axios": "^1.6.0",
-    "uuid": "^9.0.0"
+    "axios": "^1.21.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "uuid": "^14.0.3"
   }
 }

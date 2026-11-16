@@ -1,7 +1,6 @@
 [build]
-  base = "ncf-backend"
   publish = "."
-  functions = "ncf-backend/netlify/functions" # or wherever your functions folder is located
+  functions = "/netlify/functions" 
 
 [[redirects]]
   from = "/api/*"
