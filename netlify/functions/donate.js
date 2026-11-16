@@ -62,5 +62,5 @@ exports.handler = async (event, context) => {
     }
 };
 
-const app = require('../../ncf-backend/server'); // Adjust relative path to your server.js file
+const app = require('../../server'); // Adjust dots if server.js is nested elsewhere
 exports.handler = app.handler;
