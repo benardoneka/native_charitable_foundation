@@ -3,17 +3,32 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
+const serverless = require('serverless-http');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 3000;
+// --- Unified Donation Route ---
+app.post('/api/donate', async (req, res) => {
+    const { provider, amount, phone, description } = req.body;
 
-// --- 1. MTN MOMO COLLECTION API ---
-app.post('/api/donate/mtn', async (req, res) => {
+    if (!provider) {
+        return res.status(400).json({ success: false, error: "Payment provider (mtn or airtel) is required." });
+    }
+
+    if (provider.toLowerCase() === 'mtn') {
+        return handleMtnDonation(req, res, amount, phone, description);
+    } else if (provider.toLowerCase() === 'airtel') {
+        return handleAirtelDonation(req, res, amount, phone, description);
+    } else {
+        return res.status(400).json({ success: false, error: "Invalid payment provider. Use 'mtn' or 'airtel'." });
+    }
+});
+
+// --- 1. MTN MOMO COLLECTION HANDLER ---
+async function handleMtnDonation(req, res, amount, phone, description) {
     try {
-        const { amount, phone, description } = req.body;
         const referenceId = uuidv4();
         const env = process.env.MTN_ENVIRONMENT || 'sandbox';
         const baseUrl = env === 'production' 
@@ -33,7 +48,7 @@ app.post('/api/donate/mtn', async (req, res) => {
         // 2. Request To Pay (Triggers USSD Prompt)
         await axios.post(`${baseUrl}/collection/v1_0/requesttopay`, {
             amount: amount.toString(),
-            currency: "EUR", // Note: MTN Sandbox defaults to EUR/UGX depending on config; use "UGX" for live production
+            currency: env === 'production' ? "UGX" : "EUR", // Sandbox typically requires EUR unless configured otherwise
             externalId: referenceId,
             payer: {
                 partyIdType: "MSISDN",
@@ -51,22 +66,18 @@ app.post('/api/donate/mtn', async (req, res) => {
             }
         });
 
-        res.json({ success: true, referenceId, message: "MTN USSD prompt sent to your phone!" });
+        return res.json({ success: true, referenceId, message: "MTN USSD prompt sent to your phone!" });
     } catch (error) {
         console.error("MTN Error:", error.response?.data || error.message);
-        res.status(500).json({ success: false, error: error.response?.data || error.message });
+        return res.status(500).json({ success: false, error: error.response?.data || error.message });
     }
-});
+}
 
-// --- 2. AIRTEL MONEY COLLECTION API ---
-app.post('/api/donate/airtel', async (req, res) => {
+// --- 2. AIRTEL MONEY COLLECTION HANDLER ---
+async function handleAirtelDonation(req, res, amount, phone, description) {
     try {
-        const { amount, phone, description } = req.body;
         const referenceId = uuidv4();
-        const env = process.env.AIRTEL_ENVIRONMENT || 'sandbox';
-        const baseUrl = env === 'production'
-            ? 'https://openapi.airtel.africa'
-            : 'https://openapi.airtel.africa'; // Airtel sandbox uses same base with test tokens
+        const baseUrl = 'https://openapi.airtel.africa';
 
         // 1. Get OAuth Token
         const tokenRes = await axios.post(`${baseUrl}/auth/oauth2/token`, {
@@ -101,11 +112,19 @@ app.post('/api/donate/airtel', async (req, res) => {
             }
         });
 
-        res.json({ success: true, referenceId, message: "Airtel USSD prompt sent to your phone!" });
+        return res.json({ success: true, referenceId, message: "Airtel USSD prompt sent to your phone!" });
     } catch (error) {
         console.error("Airtel Error:", error.response?.data || error.message);
-        res.status(500).json({ success: false, error: error.response?.data || error.message });
+        return res.status(500).json({ success: false, error: error.response?.data || error.message });
     }
-});
+}
 
-app.listen(PORT, () => console.log(`NCF Payment Server running on port ${PORT}`));
+// Local testing fallback if running node server.js directly
+if (process.env.NODE_ENV !== 'production' && !process.env.NETLIFY) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Local NCF Payment Server running on port ${PORT}`));
+}
+
+// Export for Netlify Functions
+module.exports = app;
+module.exports.handler = serverless(app);

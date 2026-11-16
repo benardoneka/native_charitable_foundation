@@ -1,6 +1,6 @@
 async function processLiveDonation(provider, amount, phone) {
-    // Netlify automatically routes this to your backend function!
-    const endpoint = '/.netlify/functions/donate';
+    // Netlify automatically routes this via netlify.toml to your serverless function
+    const endpoint = '/api/donate';
 
     try {
         const response = await fetch(endpoint, {

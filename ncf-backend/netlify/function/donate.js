@@ -61,3 +61,6 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
+const app = require('../../ncf-backend/server'); // Adjust relative path to your server.js file
+exports.handler = app.handler;
