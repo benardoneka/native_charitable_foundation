@@ -1,0 +1,9 @@
+{
+  "name": "ncf-website",
+  "version": "1.0.0",
+  "description": "Native Charitable Foundation Website",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "uuid": "^9.0.0"
+  }
+}
