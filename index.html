@@ -10,7 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css"
+/>
   <script>
     tailwind.config = {
       theme: {
@@ -248,7 +249,7 @@
               Founded in January 2026 in Kampala, Uganda
             </h2>
           </div>
-
+<!-- //////////////////////////////////////////// SECOND PAGE//////////////////////////////////////////////////////////////////////// -->
           <p class="text-gray-700 text-base leading-relaxed">
             <strong>Native Charitable Foundation (NCF)</strong> is a nonprofit youth-led charity organization based in <strong>Kampala, Uganda in East Africa</strong>. It was founded in <strong>January 2026</strong> by:
           </p>
@@ -296,6 +297,7 @@
     </div>
   </section>
 
+  <!-- ///////////////////////////////////////   THIRD PAGE   ///////////////////////////////////////////////////////////////////////// -->
   <!-- =====================================================================
        4. OUR 5 PROGRAMS & 6 SKILLING INITIATIVES
   ====================================================================== -->
@@ -451,6 +453,7 @@
     </div>
   </section>
 
+  <!-- //////////////////////////////////////////////////    FOURTH PAGE   //////////////////////////////////////////////////////////// -->
   <!-- =====================================================================
        5. NCF LEARNERS & IMPACT GALLERY (With Local Photos Folder Loader)
   ====================================================================== -->
@@ -567,8 +570,8 @@
                 <input
                   type="number"
                   id="custom-amount"
-                  min="500"
-                  step="500"
+                  min="100"
+                  step="100"
                   value="25000"
                   placeholder="Enter any amount e.g. 2,000 or 25,000"
                   class="w-full pl-14 pr-4 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-ncfPurple focus:ring-4 focus:ring-ncfPurple/10 font-extrabold text-lg text-gray-900 outline-none transition"
@@ -636,19 +639,21 @@
                   Your Mobile Number *
                 </label>
                 <div class="relative">
-                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-bold text-gray-600 text-sm">
-                    +256
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-bold text-gray-600 text-sm"> 
                   </span>
                   <input
                     type="tel"
                     id="donor-phone"
                     placeholder="77X XXX XXX"
-                    maxlength="12"
+                    autocomplete="tel-national"
+                    maxlength="9"
                     class="w-full pl-14 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-ncfPurple focus:ring-4 focus:ring-ncfPurple/10 font-semibold text-sm text-gray-900 outline-none transition"
                     required
                   />
                 </div>
               </div>
+
+
 
               <div>
                 <label for="donor-name" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
@@ -1010,7 +1015,7 @@
           <span id="modal-provider-badge" class="font-black text-sm px-2.5 py-1 rounded-lg bg-black/10">MTN MoMo</span>
           <span class="text-xs font-bold uppercase tracking-wider">Mobile Money Checkout</span>
         </div>
-        <button type="button" id="close-modal-btn" class="p-1.5 rounded-lg hover:bg-black/10 transition" aria-label="Close Payment Modal">
+        <button type="button" id="close-modal-btn" data-close-modal class="p-1.5 rounded-lg hover:bg-black/10 transition" aria-label="Close payment window">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -1136,7 +1141,7 @@
   <!-- =====================================================================
        JAVASCRIPT: NCF PHOTO ASSET ENGINE, ROLLING HERO, GALLERY & DONATIONS
   ====================================================================== -->
-  <script>
+  <!-- <script>
     (function () {
       // ===================================================================
       // 1. NCF PHOTO ASSET ENGINE (Zero Broken Images + Local .jpeg Loader)
@@ -1992,6 +1997,16 @@
       updateDonationUI();
     })();
   </script>
+
+   -->
+  <!-- Link Modular Frontend JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  
+  <script src="./js/imagesConfig.js"></script>
+  <script src="./js/payments.js"></script>
+  <script src="./js/app.js"></script>
   <script src="/javascript.js"></script>
+
+
 </body>
 </html>

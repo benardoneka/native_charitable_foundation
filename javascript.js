@@ -6,7 +6,7 @@ async function processLiveDonation(provider, amount, phone) {
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ provider, amount, phone, description: "NCF Community Support" })
+            body: JSON.stringify({ provider, amount, phone, curency, description: "NCF Community Support" })
         });
         
         const data = await response.json();
